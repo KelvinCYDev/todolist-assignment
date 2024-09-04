@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { useCallback, useState } from "react";
 import { Todo } from "@/types/todo";
-import AddTodoForm from "@/components/AddTodoForm"
+import AddTodoForm from "@/components/AddTodoForm";
 import TodoList from "@/components/TodoList";
 import Banner from "@/components/Banner";
 import sampleData from "@/sampleData.json";
@@ -10,9 +10,9 @@ import sampleData from "@/sampleData.json";
  * Home: renders the To Do list page. Which is essentially a form component for creating To Dos and 3 todo lists
  * Each TodoList renders TodoItem components for each todo passed in
  * The 3 lists are for urgent, non-urgent, and completed
- * 
+ *
  * There are also several utility functions
- * 
+ *
  * AddTodo - create a new To Do
  * deleteTodo - delete a To Do via supplied id
  * toggleProperty - toggles isCompleted or isUrgent for supplied id
@@ -40,35 +40,41 @@ export default function Home() {
     setTodos(todos.filter((todo) => todo.id === id));
   };
 
-  const toggleProperty = useCallback((id: number, property: keyof Pick<Todo, 'isCompleted' | 'isUrgent'>) => {
-    const updatedTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        todo[property] = !todo[property] as boolean;
-      }
-      return todo;
-    });
-    setTodos(updatedTodos);
-  }, [setTodos]);
+  const toggleProperty = useCallback(
+    (id: number, property: keyof Pick<Todo, "isCompleted" | "isUrgent">) => {
+      const updatedTodos = todos.map((todo) => {
+        if (todo.id === id) {
+          todo[property] = !todo[property] as boolean;
+        }
+        return todo;
+      });
+      setTodos(updatedTodos);
+    },
+    [setTodos]
+  );
 
-  const displayTodoList = (todoList:Todo[]) => {
+  const displayTodoList = (todoList: Todo[]) => {
     return (
       <TodoList
         todos={todoList}
-        deleteTodo={deleteTodo} 
-        toggleComplete={(id) => toggleProperty(id, 'isCompleted')} 
-        toggleUrgent={(id) => toggleProperty(id, 'isUrgent')} 
+        deleteTodo={deleteTodo}
+        toggleComplete={(id) => toggleProperty(id, "isCompleted")}
+        toggleUrgent={(id) => toggleProperty(id, "isUrgent")}
       />
     );
   };
 
   const displayTodos = (displayUrgent: boolean) => {
-    return displayTodoList(todos.filter((x) => {
-      if (displayUrgent) {
+    return displayTodoList(
+      todos.filter((x) => {
+        // if (displayUrgent) {
+        //   return !x.isCompleted && x.isUrgent === displayUrgent;
+        // } else {
+        //   return !x.isCompleted && x.isUrgent !== displayUrgent;
+        // }
         return !x.isCompleted && x.isUrgent === displayUrgent;
-      } else {
-        return !x.isCompleted && x.isUrgent !== displayUrgent;
-      }
-    }));
+      })
+    );
   };
 
   const displayComplete = () => {
@@ -86,7 +92,7 @@ export default function Home() {
 
       <div className="Home">
         <Banner />
-        <AddTodoForm addTodo={AddTodo}/>
+        <AddTodoForm addTodo={AddTodo} />
         {displayTodos(true)}
         {displayTodos(false)}
         {displayComplete()}
