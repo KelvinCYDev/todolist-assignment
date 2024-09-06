@@ -29,8 +29,11 @@ const Banner: React.FC = () => {
 
         window.addEventListener('resize', handleResize);
 
-        handleResize();
-    }, []);
+        // handleResize();
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [hdImgUrl, imgUrl ]);
 
     if (!currentImgUrl)
         return <p>Banner Loading...</p>;
